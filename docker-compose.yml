@@ -2,32 +2,43 @@ version: '3.1'
 
 services:
 
-  user-services : 
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    environment:
+      - PORT=3000
+      - AUTH_SERVICE_URL=http://network_microservice-user-services-1:3001
+      - RESTRAURANT_SERVICE_URL=http://network_microservice-restaurant-services-1:3002
+      - ORDER_SERVICE_URL=http://network_microservice-order-services-1:3003
+    ports:
+      - "3000:3000"
+
+  user-services:
     build:
       context: ./user-auth-service
       dockerfile: Dockerfile
-    environment : 
+    environment:
       - MONGOURI=mongodb://network-microservices:27017
       - PORT=3001
     ports:
       - "3001:3001"
 
-
-  restaurant-services : 
+  restaurant-services:
     build:
       context: ./restaurant-service
       dockerfile: Dockerfile
-    environment : 
+    environment:
       - MONGOURI=mongodb://network-microservices:27017
       - PORT=3002
     ports:
       - "3002:3002"
 
-  order-services :
+  order-services:
     build:
       context: ./order-service
       dockerfile: Dockerfile
-    environment : 
+    environment:
       - MONGOURI=mongodb://network-microservices:27017
       - PORT=3003
       - restraunt_service=http://network_microservice-restaurant-services-1:3002/
