@@ -4,6 +4,7 @@ import orderRoute from "./routes/order/orderRoute";
 import { jwt } from "@elysiajs/jwt";
 import { cookie } from "@elysiajs/cookie";
 import restrauntRoute from "./routes/restraunt/restraunt";
+import { swagger } from '@elysiajs/swagger'
 
 const app = new Elysia()
   .use(
@@ -12,7 +13,9 @@ const app = new Elysia()
       secret: "love punch very much",
     })
   )
-  .use(cookie());
+  .use(cookie()).use(swagger({
+      path: "/api-docs",
+  }));
 
 app.get("/", () => "Hello Elysia");
 
